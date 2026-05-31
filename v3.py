@@ -69,3 +69,8 @@ def time_compare(self, text, pattern, times=1000):
     print(f"BF算法耗时：{bf_time:.6f} 秒")
     print(f"KMP算法耗时：{kmp_time:.6f} 秒")
     return bf_time, kmp_time
+if __name__ == "__main__":
+    demo = TextSystemV3()
+    text = "ababcabcabx"
+    pat = "abcab"
+    demo.time_compare(text, pat)
