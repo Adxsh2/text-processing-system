@@ -50,3 +50,22 @@ class TextSystemV3(TextSystemV2):
             if j == len(pattern):
                 return i - j + 1
         return -1
+import time
+
+# 新增：算法耗时对比
+def time_compare(self, text, pattern, times=1000):
+    # BF耗时
+    start = time.time()
+    for _ in range(times):
+        self.bf_search(text, pattern)
+    bf_time = time.time() - start
+
+    # KMP耗时
+    start = time.time()
+    for _ in range(times):
+        self.kmp_search(text, pattern)
+    kmp_time = time.time() - start
+
+    print(f"BF算法耗时：{bf_time:.6f} 秒")
+    print(f"KMP算法耗时：{kmp_time:.6f} 秒")
+    return bf_time, kmp_time
