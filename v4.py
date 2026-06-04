@@ -17,6 +17,7 @@ class TextSystemV4(TextSystemV3):
             print("✅数据回滚完成")
         else:
             print("❌无备份记录，无法回滚")
+
     def cut_text(self, start_line, end_line):
         """截取指定起止行文本，行号从1开始"""
         try:
@@ -33,6 +34,38 @@ class TextSystemV4(TextSystemV3):
         except ValueError:
             print("❌行号必须输入数字")
             return None
+
+    def replace_text(self, old_str, new_str, replace_all=True):
+        """字符串替换，True全局替换，False每行只替换首个"""
+        self.backup()
+        all_data = self.text_list.get_all()
+        new_data = []
+        for line in all_data:
+            if replace_all:
+                line = line.replace(old_str, new_str)
+            else:
+                line = line.replace(old_str, new_str, 1)
+            new_data.append(line)
+        self.text_list.load_from_list(new_data)
+        print(f"✅替换完成：{old_str}→{new_str}")
+
+
+if __name__ == "__main__":
+    obj = TextSystemV4()
+    obj.load_text()
+    print("====原始文本====")
+    obj.show_text()
+
+    cut_res = obj.cut_text(2, 4)
+    print("截取结果：", cut_res)
+
+    obj.replace_text("a", "A", True)
+    print("====替换后====")
+    obj.show_text()
+
+    obj.rollback()
+    print("====回滚后====")
+    obj.show_text()
         self.backup_text = None  # 文本备份
 
     def backup(self):
