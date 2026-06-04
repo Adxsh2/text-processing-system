@@ -24,6 +24,7 @@ class TextSystemV4(TextSystemV3):
             start = start_line - 1
             end = end_line
             total = self.text_list.get_length()
+            # 边界合法性校验
             if start < 0 or end > total or start >= end:
                 print("❌截取行号超出范围")
                 return None
@@ -65,3 +66,17 @@ if __name__ == "__main__":
     obj.rollback()
     print("====回滚后====")
     obj.show_text()
+        self.backup_text = None  # 文本备份
+
+    def backup(self):
+        """备份当前文本"""
+        self.backup_text = self.text_list.get_all().copy()
+        print("文本已备份！")
+
+    def rollback(self):
+        """回溯到备份版本"""
+        if self.backup_text:
+            self.text_list.load_from_list(self.backup_text)
+            print("已回溯到备份版本！")
+        else:
+            print("无备份版本，无法回溯！")
