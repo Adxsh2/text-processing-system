@@ -35,21 +35,8 @@ class TextSystemV4(TextSystemV3):
             print("❌行号必须输入数字")
             return None
 
-    def replace_text(self, old_str, new_str, replace_all=True):
-        """字符串替换，True全局替换，False每行只替换首个"""
-        self.backup()
-        all_data = self.text_list.get_all()
-        new_data = []
-        for line in all_data:
-            if replace_all:
-                line = line.replace(old_str, new_str)
-            else:
-                line = line.replace(old_str, new_str, 1)
-            new_data.append(line)
-        self.text_list.load_from_list(new_data)
-        print(f"✅替换完成：{old_str}→{new_str}")
 
-
+# 程序入口（放在类定义外面，文件最末尾）
 if __name__ == "__main__":
     system = TextSystemV4()
     # 加载并展示文本
