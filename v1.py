@@ -43,7 +43,10 @@ class TextLineList:
         """获取长度"""
         return len(self.data)
 
-
+def load_from_list(self, data_list):
+    """从列表加载数据，用于回滚功能"""
+    self.data = data_list.copy()
+    
 # 版本1：基础文本存储与显示系统
 class TextSystemV1:
     def __init__(self):
