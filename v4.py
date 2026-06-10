@@ -51,32 +51,42 @@ class TextSystemV4(TextSystemV3):
 
 
 if __name__ == "__main__":
-    obj = TextSystemV4()
-    obj.load_text()
-    print("====原始文本====")
-    obj.show_text()
+    system = TextSystemV4()
+    # 加载并展示文本
+    system.load_text()
+    system.show_text()
 
-    cut_res = obj.cut_text(2, 4)
-    print("截取结果：", cut_res)
+    # 备份数据
+    system.backup()
 
-    obj.replace_text("a", "A", True)
-    print("====替换后====")
-    obj.show_text()
+    # 编辑文本
+    system.edit_text()
+    system.show_text()
 
-    obj.rollback()
-    print("====回滚后====")
-    obj.show_text()
-        self.backup_text = None  # 文本备份
+    # 关键词查找与统计
+    key = input("请输入查找关键词：")
+    res = system.search_by_keyword(key)
+    system.show_search_result(key, res)
+    system.stat_text(key)
 
-    def backup(self):
-        """备份当前文本"""
-        self.backup_text = self.text_list.get_all().copy()
-        print("文本已备份！")
+    # 截取文本
+    try:
+        s_line = int(input("输入起始行号："))
+        e_line = int(input("输入结束行号："))
+        cut_res = system.cut_text(s_line, e_line)
+        if cut_res:
+            print("截取内容：")
+            for line in cut_res:
+                print(line)
+    except ValueError:
+        print("行号请输入数字！")
 
-    def rollback(self):
-        """回溯到备份版本"""
-        if self.backup_text:
-            self.text_list.load_from_list(self.backup_text)
-            print("已回溯到备份版本！")
-        else:
-            print("无备份版本，无法回溯！")
+    # 数据回滚
+    system.rollback()
+    system.show_text()
+
+    # BF/KMP 算法耗时测试
+    print("\n===== BF & KMP 性能对比 =====")
+    test_text = "ababcabcabx"
+    test_pattern = "abcab"
+    system.time_compare(test_text, test_pattern)
