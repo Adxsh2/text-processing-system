@@ -82,6 +82,19 @@ class TextSystemV5(TextSystemV4):
                 self.word_graph.add_edge(w1, w2)
         print("v5词语共现图构建完成")
 
+    # ========== C新增：图查询接口 ==========
+    def search_word_neighbor(self, target):
+        if not self.word_graph:
+            self.build_word_graph()
+        res = self.word_graph.get_neighbors(target)
+        print(f"词语「{target}」的相邻词：{res}")
+        return res
+
+    def show_full_graph_info(self):
+        if not self.word_graph:
+            self.build_word_graph()
+        self.word_graph.print_full_graph()
+
 
 # 自定义无向加权邻接图（作业要求图逻辑结构）
 class WordGraph:
@@ -90,7 +103,7 @@ class WordGraph:
 
     def add_vertex(self, word):
         if word not in self.adj_table:
-            self.adj_table[word] = []
+            self.adj_table[word] = {}
 
     def add_edge(self, w1, w2):
         self.add_vertex(w1)
