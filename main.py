@@ -36,10 +36,17 @@ if __name__ == "__main__":
     sys.rollback()
     sys.show_text()
 
-    # V5新增图功能
-    print("\n【5. V5新增功能：分词、词频、词语共现图谱】")
-    sys.split_text()
+    # V5新增图功能（修正方法名 + 补充建图步骤）
+    print("\n【5. V5新增功能：分词、词频、词语共现图】")
+    words, sents = sys.split_text()
     sys.show_word_frequency()
-    sys.show_all_graph()
+
+    # 必须先构建共现图才能查询、打印图
+    sys.build_word_graph()
+
+    # 打印整张邻接图
+    sys.show_full_graph_info()
+
+    # 查询单个词语相邻关联词
     query_word = input("输入需要查询关联的词语：")
-    sys.show_word_relation(query_word)
+    sys.search_word_neighbor(query_word)
