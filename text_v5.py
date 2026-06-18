@@ -1,7 +1,16 @@
 from v4 import TextSystemV4
-import string
 
-# V5顶层系统类，继承v4，复用V1-V4全部功能
+class TextList:
+    def __init__(self):
+        self.data = []
+    def add(self, val):
+        self.data.append(val)
+    def get_all(self):
+        return self.data.copy()
+    def get_length(self):
+        return len(self.data)
+
+
 class TextSystemV5(TextSystemV4):
     def __init__(self):
         super().__init__()
@@ -71,7 +80,6 @@ class TextSystemV5(TextSystemV4):
             print(f"{idx}. 【{word}】：{cnt}次")
         print("===================================\n")
 
-    # 嵌入TextSystemV5类内部的建图函数
     def build_word_graph(self):
         _, sentences = self.split_text()
         self.word_graph = WordGraph()
@@ -82,7 +90,6 @@ class TextSystemV5(TextSystemV4):
                 self.word_graph.add_edge(w1, w2)
         print("v5词语共现图构建完成")
 
-    # ========== C新增：图查询接口 ==========
     def search_word_neighbor(self, target):
         if not self.word_graph:
             self.build_word_graph()
@@ -96,24 +103,19 @@ class TextSystemV5(TextSystemV4):
         self.word_graph.print_full_graph()
 
 
-# 自定义无向加权邻接图（作业要求图逻辑结构）
 class WordGraph:
     def __init__(self):
         self.adj_table = {}
-
     def add_vertex(self, word):
         if word not in self.adj_table:
             self.adj_table[word] = {}
-
     def add_edge(self, w1, w2):
         self.add_vertex(w1)
         self.add_vertex(w2)
         self.adj_table[w1][w2] = self.adj_table[w1].get(w2, 0) + 1
         self.adj_table[w2][w1] = self.adj_table[w2].get(w1, 0) + 1
-
     def get_neighbors(self, target_word):
         return self.adj_table.get(target_word, {})
-
     def print_full_graph(self):
         print("\n==== V5 词语共现邻接图 ====")
         for word, neighbor_dict in self.adj_table.items():
