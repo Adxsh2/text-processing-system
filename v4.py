@@ -5,6 +5,10 @@ class TextSystemV4(TextSystemV3):
         super().__init__()
         self.backup_text = None
 
+    # 新增：给V5调用的添加文本方法
+    def add_text(self, text):
+        self.text_list.add(text)
+
     def backup(self):
         """全量备份文本列表"""
         self.backup_text = self.text_list.get_all().copy()
@@ -34,46 +38,3 @@ class TextSystemV4(TextSystemV3):
         except ValueError:
             print("❌行号必须输入数字")
             return None
-
-
-# 程序入口（放在类定义外面，文件最末尾）
-if __name__ == "__main__":
-    system = TextSystemV4()
-    # 加载并展示文本
-    system.load_text()
-    system.show_text()
-
-    # 备份数据
-    system.backup()
-
-    # 编辑文本
-    system.edit_text()
-    system.show_text()
-
-    # 关键词查找与统计
-    key = input("请输入查找关键词：")
-    res = system.search_by_keyword(key)
-    system.show_search_result(key, res)
-    system.stat_text(key)
-
-    # 截取文本
-    try:
-        s_line = int(input("输入起始行号："))
-        e_line = int(input("输入结束行号："))
-        cut_res = system.cut_text(s_line, e_line)
-        if cut_res:
-            print("截取内容：")
-            for line in cut_res:
-                print(line)
-    except ValueError:
-        print("行号请输入数字！")
-
-    # 数据回滚
-    system.rollback()
-    system.show_text()
-
-    # BF/KMP 算法耗时测试
-    print("\n===== BF & KMP 性能对比 =====")
-    test_text = "ababcabcabx"
-    test_pattern = "abcab"
-    system.time_compare(test_text, test_pattern)
